@@ -1,12 +1,20 @@
 # cGPRT
-cGPRT is a fast and accurate facial landmark estimation algorithm. It is developed by the KAIST [SLSP](http://slsp.kaist.ac.kr/xe/) Lab.
+The cGPRT is an implementation of the CVPR 2015 paper, [Face Alignment Using Cascade Gaussian Process Regression Trees](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf). It is developed by the KAIST [SLSP](http://slsp.kaist.ac.kr/xe/) Lab.
 
 # Installation
-TODO: Describe the installation process
+####Dependencies
+- [armadillo](http://arma.sourceforge.net/)
+- [LAPACK](http://www.netlib.org/lapack/)
 
 # Usage
-TODO: Write usage instructions
-
+####Training
+```
+> cGPRT_training config_file tr_img_dir tr_data_list te_img_dir te_data_list model_file
+```
+####Prediction
+```
+> cGPRT_predict model_file te_img_dir te_data_list result_file
+```
 # Citation
 Please cite the following [paper](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf) in your publications if it helps your research:
 ```
