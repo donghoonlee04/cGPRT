@@ -2,6 +2,7 @@
 #define SHAPE_UTILS_H
 
 #include <armadillo>
+#include <iomanip>
 
 void load_data(
 	const std::string & image_list_file,
@@ -38,6 +39,7 @@ void save_data(
 {
 	std::ofstream fout;
 	fout.open(result_file);
+	fout << std::setprecision(6) << std::fixed;
 	int num_data = (int)shapes.size();
 	int num_points = (int)shapes[0].n_cols;
 
@@ -47,7 +49,7 @@ void save_data(
 	for (int i = 0; i < num_data; ++i)
 	{
 		fout << image_names[i] << std::endl;
-		fout << rects[i](0) << " " << rects[i](1) << " " << rects[i](2) << " " << rects[i](3) << std::endl;
+		fout << (int)rects[i](0) << " " << (int)rects[i](1) << " " << (int)rects[i](2) << " " << (int)rects[i](3) << std::endl;
 		for (int j = 0; j < num_points; ++j)
 			fout << shapes[i](0, j) << " " << shapes[i](1, j) << std::endl;
 	}
