@@ -1,6 +1,6 @@
 #cGPRT
 Code for the paper, [Face Alignment Using Cascade Gaussian Process Regression Trees](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf). 
-Not that because the code is re-implemented based on armadillo, the results are not exactly same with the results in the paper.
+Note that because the code is re-implemented based on armadillo, the results are not exactly same with the results in the paper.
 
 Contact: Donghoon Lee (iamdh@kaist.ac.kr) 
 
