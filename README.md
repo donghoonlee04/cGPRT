@@ -7,7 +7,7 @@ The cGPRT is an implementation of the CVPR 2015 paper, [Face Alignment Using Cas
 - [LAPACK](http://www.netlib.org/lapack/)
 
 ####Cropped data and pre-learned models
-- [cropped data](http://143.248.157.13:8080/sharing/ltn8yZbU5) - original data can be found [here](http://ibug.doc.ic.ac.uk/resources/300-W/)
+- [cropped data](http://143.248.157.13:8080/sharing/ltn8yZbU5) - original data can be found in [here](http://ibug.doc.ic.ac.uk/resources/300-W/)
 - [configuration files]()
 - [pre-learned models]()
 - [predicted landmarks]()
