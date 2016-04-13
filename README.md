@@ -1,6 +1,8 @@
 #cGPRT
 Code for the paper, [Face Alignment Using Cascade Gaussian Process Regression Trees](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf). 
 
+Not that because the code is re-implemented based on armadillo, the results are not exactly same with the results in the paper.
+
 Contact: Donghoon Lee (iamdh@kaist.ac.kr) 
 
 ##Installation
@@ -10,10 +12,13 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 - [LAPACK](http://www.netlib.org/lapack/)
 
 ####Cropped data and pre-learned models
-- [cropped data](http://143.248.157.13:8080/sharing/ltn8yZbU5) - original data can be found in [here](http://ibug.doc.ic.ac.uk/resources/300-W/)
+- [cropped data]http://143.248.157.13:8080/sharing/IRnxfrsb8) - original data can be found in [here](http://ibug.doc.ic.ac.uk/resources/300-W/)
 - [configuration files]()
-- [pre-learned models]()
+- [data list files](http://143.248.157.13:8080/sharing/98yW5PfuO)
 - [predicted landmarks]()
+- [pre-learned models]()
+
+
 
 ##Usage
 ####Data format
