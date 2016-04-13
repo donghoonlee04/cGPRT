@@ -1,12 +1,17 @@
-# cGPRT
+#cGPRT
 The cGPRT is an implementation of the CVPR 2015 paper, [Face Alignment Using Cascade Gaussian Process Regression Trees](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf). It is developed by the KAIST [SLSP](http://slsp.kaist.ac.kr/xe/) Lab.
 
-# Installation
+#Installation
 ####Dependencies
 - [armadillo](http://arma.sourceforge.net/)
 - [LAPACK](http://www.netlib.org/lapack/)
 
-# Usage
+####Cropped data and pre-learned models
+- [cropped data](http://143.248.157.13:8080/sharing/ltn8yZbU5)
+- [configuration files]()
+- [pre-learned models]()
+
+#Usage
 ####Data format
 - data_list example
 ```
@@ -40,7 +45,7 @@ random_seed 1                       // random seed for random number generation
 ```
 > cGPRT_predict model_file te_img_dir te_data_list result_file
 ```
-# Citation
+#Citation
 Please cite the following [paper](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf) in your publications if it helps your research:
 ```
 @inproceedings{lee2015face,
@@ -52,4 +57,5 @@ Please cite the following [paper](http://slsp.kaist.ac.kr/paperdata/Face_Alignme
   organization={IEEE}
 }
 ```
+
 
