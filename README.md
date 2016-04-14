@@ -15,11 +15,13 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 - data list files [[down]] (http://143.248.157.13:8080/sharing/gsCgYWUcq)
 - pre-learned models and performance
 
-| Dataset         | Paper (full)  | Paper (fast)  | This (full1)  | This (full2)  | This (fast) |
+| Dataset         | Paper (full)  | Paper (fast)  | This (full1*)  | This (full2*)  | This (fast) |
 | :---            | :---:         | :---:         | :---:         |  :---:        |  :---:      | 
 | LFPW (29 pts)   | 3.51          | N.A.          | | | 3.59 [[down]](http://143.248.157.13:8080/sharing/9OGXZAdvx) |
 | HELEN (194 pts) | 4.63          | N.A.          | | | 4.85 [[down]](http://143.248.157.13:8080/sharing/FQUJxlmDD) |
-| IBUG (68 pts)   | 5.71          | 6.32          | | | 6.32 [[down]](http://143.248.157.13:8080/sharing/mXfem3ria)|
+| IBUG (68 pts)   | 5.71          | 6.32          | | | 6.32** [[down]](http://143.248.157.13:8080/sharing/mXfem3ria)|
+\* Full1 configuration enables Gaussian smoothing while Full2 does not. Current implementation of Gaussian smoothing is quite slow, and performance improvement is not comparatively small. Thus, we recommend disable Gaussian smoothing.
+\** We recommend these models for general purpose.
 
 ##Usage
 ####Data format
