@@ -3,6 +3,7 @@
 
 #include <armadillo>
 #include <iomanip>
+#include <image_utils.h>
 
 void load_data(
 	const std::string & image_list_file,
@@ -108,10 +109,13 @@ float inter_occular_distance(
 
 std::vector<float> extract_pixel_values(
 	const arma::fmat & image,
+	const std::vector<arma::fmat> & image_vec,
 	const arma::fvec & rect,
 	const arma::fmat & shape_normed,
 	const arma::fmat & inv_tform,
-	const std::vector<arma::fvec> & deltas
+	const std::vector<arma::fvec> & deltas,
+	const std::vector<int> sigma_idx,
+	const bool enable_smoothing
 	) {
 		
 	int num_sampling_patterns = (int)deltas.size();
@@ -138,7 +142,7 @@ std::vector<float> extract_pixel_values(
 			x = rect(2) - 1 > x ? x : rect(2) - 1;
 			y = rect(3) - 1 > y ? y : rect(3) - 1;
 
-			pixel_values[idx] = image(y, x);
+			pixel_values[idx] = enable_smoothing ? image_vec[sigma_idx[j]](y, x) : image(y, x);
 			idx++;
 		}
 	}

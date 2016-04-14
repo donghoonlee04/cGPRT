@@ -14,6 +14,9 @@ private:
 	std::vector<std::vector<regression_tree> > cascades;
 	arma::fmat mean_shape;
 	std::vector<arma::fvec> deltas;
+	std::vector<float> sigmas;
+	std::vector<int> sigma_idx;
+	bool enable_smoothing;
 
 public:
 
@@ -26,9 +29,12 @@ public:
 		const std::vector<std::vector<regression_tree> > & cascades_,
 		const arma::fmat & mean_shape_,
 		const std::vector<arma::fvec> & deltas_,
+		const std::vector<float> & sigmas_,
+		const std::vector<int> & sigma_idx_,
+		const bool & enable_smoothing_,
 		const std::vector<int> & left_eye_idx_,
 		const std::vector<int> & right_eye_idx_
-		) : cascades(cascades_), mean_shape(mean_shape_), deltas(deltas_), left_eye_idx(left_eye_idx_), right_eye_idx(right_eye_idx_) {}
+		) : cascades(cascades_), mean_shape(mean_shape_), deltas(deltas_), sigmas(sigmas_), sigma_idx(sigma_idx_), enable_smoothing(enable_smoothing_), left_eye_idx(left_eye_idx_), right_eye_idx(right_eye_idx_) {}
 
 	shape_predictor(const std::string & model_file_name) { load(model_file_name); }
 
@@ -41,11 +47,14 @@ public:
 		arma::fmat tform, tform_inv;
 		std::vector<float> pixel_values;
 		std::vector<arma::fmat> image_vec;
-		
+
+		if (enable_smoothing)
+			image_vec = gaussian_smoothing(image, rect, sigmas);
+
 		for (int i = 0; i < (int)cascades.size(); i++)
 		{
 			find_similarity_tform(shape_pred, mean_shape, tform, tform_inv);
-			pixel_values = extract_pixel_values(image, rect, shape_pred, tform_inv, deltas);
+			pixel_values = extract_pixel_values(image, image_vec, rect, shape_pred, tform_inv, deltas, sigma_idx, enable_smoothing);
 			shape_pred = tform*shape_pred;			
 			for (int j = 0; j < (int)cascades[i].size(); j++)
 				shape_pred += cascades[i][j].leaf_values[cascades[i][j](pixel_values)];
@@ -66,6 +75,19 @@ public:
 		deltas.resize(num_patterns);
 		for (int i = 0; i < num_patterns; i++)
 			deltas[i].load(fin, arma::arma_binary);
+		fin.read(reinterpret_cast<char*>(&enable_smoothing), sizeof(enable_smoothing));
+		if (enable_smoothing)
+		{
+			int num_sigmas;
+			fin.read(reinterpret_cast<char*>(&num_sigmas), sizeof(num_sigmas));
+			sigmas.resize(num_sigmas);
+			for (int i = 0; i < num_sigmas; i++)
+				fin.read(reinterpret_cast<char*>(&sigmas[i]), sizeof(sigmas[i]));
+			fin.read(reinterpret_cast<char*>(&num_patterns), sizeof(num_patterns));
+			sigma_idx.resize(num_patterns);
+			for (int i = 0; i < num_patterns; i++)
+				fin.read(reinterpret_cast<char*>(&sigma_idx[i]), sizeof(sigma_idx[i]));
+		}
 
 		int num_cascades;
 		fin.read(reinterpret_cast<char*>(&num_cascades), sizeof(num_cascades));
@@ -118,6 +140,17 @@ public:
 		fout.write(reinterpret_cast<char*>(&num_patterns), sizeof(num_patterns));
 		for (int i = 0; i < num_patterns; i++)
 			deltas[i].save(fout, arma::arma_binary);
+		fout.write(reinterpret_cast<char*>(&enable_smoothing), sizeof(enable_smoothing));
+		if (enable_smoothing)
+		{
+			int num_sigmas = sigmas.size();
+			fout.write(reinterpret_cast<char*>(&num_sigmas), sizeof(num_sigmas));
+			for (int i = 0; i < num_sigmas; i++)
+				fout.write(reinterpret_cast<char*>(&sigmas[i]), sizeof(sigmas[i]));
+			fout.write(reinterpret_cast<char*>(&num_patterns), sizeof(num_patterns));
+			for (int i = 0; i < num_patterns; i++)
+				fout.write(reinterpret_cast<char*>(&sigma_idx[i]), sizeof(sigma_idx[i]));
+		}
 				
 		int num_cascades = (int)cascades.size();
 		fout.write(reinterpret_cast<char*>(&num_cascades), sizeof(num_cascades));

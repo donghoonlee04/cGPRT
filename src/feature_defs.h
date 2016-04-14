@@ -2,6 +2,7 @@
 #define FEATURE_DEFS_H
 
 #define NUM_PATTERNS 43
+#define NUM_SIGMAS 8
 
 static const float DELTA_X[NUM_PATTERNS] = {
 	0.666667f, 0.333333f, -0.333333f, -0.666667f, -0.333333f, 0.333333f, 0.433013f, 0.000000f,
@@ -18,5 +19,16 @@ static const float DELTA_Y[NUM_PATTERNS] = {
 	0.000000f, 0.144338f, 0.144338f, 0.000000f, -0.144338f, -0.144338f, 0.055556f, 0.111111f,
 	0.055556f, -0.055556f, -0.111111f, -0.055556f, 0.000000f, 0.072169f, 0.072169f, 0.000000f,
 	-0.072169f, -0.072169f, 0.000000f
+};
+static const float SIGMAS[NUM_SIGMAS] = {
+	0.333333f, 0.250000f, 0.180556f, 0.125000f, 0.083333f, 0.055556f, 0.041667f, 0.000000f
+};
+static const int SIGMA_IDX[NUM_PATTERNS] = {
+	0, 0, 0, 0, 0, 0, 1, 1,
+	1, 1, 1, 1, 2, 2, 2, 2,
+	2, 2, 3, 3, 3, 3, 3, 3,
+	4, 4, 4, 4, 4, 4, 5, 5,
+	5, 5, 5, 5, 6, 6, 6, 6,
+	6, 6, 7
 };
 #endif

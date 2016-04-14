@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\feature_defs.h" />
     <ClInclude Include="..\..\src\gp_utils.h" />
+    <ClInclude Include="..\..\src\image_utils.h" />
     <ClInclude Include="..\..\src\regression_tree.h" />
     <ClInclude Include="..\..\src\shape_predictor.h" />
     <ClInclude Include="..\..\src\shape_trainer.h" />

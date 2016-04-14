@@ -63,6 +63,7 @@
     <ClCompile Include="cGPRT_predict.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\image_utils.h" />
     <ClInclude Include="..\..\src\regression_tree.h" />
     <ClInclude Include="..\..\src\shape_predictor.h" />
     <ClInclude Include="..\..\src\shape_utils.h" />

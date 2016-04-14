@@ -14,6 +14,7 @@ private:
 
 	int num_cascades, num_forests, num_trees, tree_depth;
 	int num_points, oversampling_ratio, num_split_tests;
+	bool enable_smoothing;
 	float nu;
 	std::vector<int> left_eye_idx, right_eye_idx;
 	int num_data_tr, num_data_te;
@@ -26,6 +27,8 @@ private:
 	std::vector<std::vector<regression_tree> > cascades;
 
 	std::vector<arma::fvec> deltas;
+	std::vector<float> sigmas;
+	std::vector<int> sigma_idx;
 
 public:
 
@@ -49,6 +52,7 @@ public:
 			else if (!token1.compare("num_points"))				{ fin >> num_points; }
 			else if (!token1.compare("left_eye_idx"))			{ fin >> token2; fin >> token2; while (token2.compare(")")) { left_eye_idx.push_back(atoi(token2.c_str())); fin >> token2; } }
 			else if (!token1.compare("right_eye_idx"))			{ fin >> token2; fin >> token2; while (token2.compare(")")) { right_eye_idx.push_back(atoi(token2.c_str())); fin >> token2; } }
+			else if (!token1.compare("enable_smoothing"))		{ fin >> enable_smoothing; }
 			else if (!token1.compare("num_split_tests"))		{ fin >> num_split_tests; }
 			else if (!token1.compare("random_seed"))			{ fin >> random_seed; arma::arma_rng::set_seed(random_seed); }
 		}
@@ -70,8 +74,6 @@ public:
 		
 		print_parameters();
 
-		float tr_err = 0.0f; float te_err = 0.0f, sn, sf;
-		int length;
 		std::vector<arma::fvec> rects_tr_gnd, rects_te_gnd;
 		std::vector<arma::fmat> shapes_tr_pred, shapes_tr_gnd, shapes_te_pred, shapes_te_gnd;
 		std::vector<int> image_tr_idx, image_te_idx;
@@ -81,13 +83,13 @@ public:
 		std::cout << "[0] Initialize training" << std::endl;
 		initialize_training(rects_train, shapes_train, rects_test, shapes_test,	shapes_tr_pred, shapes_tr_gnd, rects_tr_gnd, image_tr_idx, iod_tr, shapes_te_pred, shapes_te_gnd, rects_te_gnd, image_te_idx, iod_te);
 		std::cout << "[0] Initialize feature extractor" << std::endl; 
-		initialize_feature_extractor(deltas);
+		initialize_feature_extractor(deltas, sigmas, sigma_idx);
 
 		std::vector<arma::fmat> shapes_tr_pred_tformed(num_data_tr), shapes_tr_gnd_tformed(num_data_tr), shapes_delta_tr(num_data_tr), shapes_te_pred_tformed(num_data_te), shapes_te_gnd_tformed(num_data_te), shapes_delta_te(num_data_te);
 		std::vector<arma::fmat> tform_tr(num_data_tr), tform_inv_tr(num_data_tr), tform_te(num_data_te), tform_inv_te(num_data_te);
 		std::vector<std::vector<float> > pixel_values_tr(num_data_tr), pixel_values_te(num_data_te);
 
-		tr_err = 0.0f; te_err = 0.0f;
+		float tr_err = 0.0f, te_err = 0.0f;
 		for (int i = 0; i < num_data_tr; i++)
 			tr_err += compute_error(shapes_tr_gnd[i], shapes_tr_pred[i], iod_tr[i]);
 		tr_err /= (float)num_data_tr;
@@ -104,6 +106,7 @@ public:
 			std::cout << "[" << cascade_idx << "/" << num_cascades << "] Extract tr features ";
 			int image_idx_buf = -1;
 			arma::fmat image_buf;
+			std::vector<arma::fmat> image_blur_buf;
 			for (int i = 0; i < num_data_tr; i++)
 			{
 				if (i && !(i % (num_data_tr / 10))) { std::cout << "."; }
@@ -111,11 +114,12 @@ public:
 				{
 					image_idx_buf = image_tr_idx[i];
 					image_buf.load(image_directory_train + "/" + image_names_train[image_idx_buf], arma::pgm_binary);
+					if (enable_smoothing) { image_blur_buf = gaussian_smoothing(image_buf, rects_tr_gnd[i], sigmas); }
 				}
 				find_similarity_tform(shapes_tr_pred[i], mean_shape, tform_tr[i], tform_inv_tr[i]);
 				shapes_tr_pred_tformed[i] = tform_tr[i] * shapes_tr_pred[i];
 				shapes_tr_gnd_tformed[i] = tform_tr[i] * shapes_tr_gnd[i];
-				pixel_values_tr[i] = extract_pixel_values(image_buf, rects_tr_gnd[i], shapes_tr_pred[i], tform_inv_tr[i], deltas);
+				pixel_values_tr[i] = extract_pixel_values(image_buf, image_blur_buf, rects_tr_gnd[i], shapes_tr_pred[i], tform_inv_tr[i], deltas, sigma_idx, enable_smoothing);
 			}
 			std::cout << std::endl;
 			std::cout << "[" << cascade_idx << "/" << num_cascades << "] Extract te features ";
@@ -128,18 +132,15 @@ public:
 				{
 					image_idx_buf = image_te_idx[i]; 
 					image_buf.load(image_directory_test + "/" + image_names_test[image_te_idx[i]], arma::pgm_binary);
+					if (enable_smoothing) { image_blur_buf = gaussian_smoothing(image_buf, rects_te_gnd[i], sigmas); }
 				}
 				find_similarity_tform(shapes_te_pred[i], mean_shape, tform_te[i], tform_inv_te[i]);
 				shapes_te_pred_tformed[i] = tform_te[i] * shapes_te_pred[i];
 				shapes_te_gnd_tformed[i] = tform_te[i] * shapes_te_gnd[i];
-				pixel_values_te[i] = extract_pixel_values(image_buf, rects_te_gnd[i], shapes_te_pred[i], tform_inv_te[i], deltas);
+				pixel_values_te[i] = extract_pixel_values(image_buf, image_blur_buf, rects_te_gnd[i], shapes_te_pred[i], tform_inv_te[i], deltas, sigma_idx, enable_smoothing);
 			}
 			std::cout << std::endl;
 			
-			length = -30;
-			sn = 10.0f;
-			sf = 1.0f;
-
 			for (int forest_idx = 0; forest_idx < num_forests; forest_idx++)
 			{
 				std::vector<regression_tree> forest;
@@ -150,8 +151,7 @@ public:
 
 				grow_forest(shapes_delta_tr, pixel_values_tr, forest);
 				
-				gprt_optimize(shapes_delta_tr, pixel_values_tr, sn, sf, length, forest);
-				length = -10;
+				gprt_optimize(shapes_delta_tr, pixel_values_tr, forest);
 
 				compensate_scale(shape_std_val, nu, forest);
 
@@ -185,15 +185,12 @@ public:
 		}
 		std::cout << "[" << num_cascades << "/" << num_cascades << "] Training completed" << std::endl;
 		
-		return shape_predictor(cascades, mean_shape, deltas, left_eye_idx, right_eye_idx);
+		return shape_predictor(cascades, mean_shape, deltas, sigmas, sigma_idx, enable_smoothing, left_eye_idx, right_eye_idx);
 	}
 
 	void gprt_optimize(
 		const std::vector<arma::fmat> & delta_normed,
 		const std::vector<std::vector<float> > & pixel_values,
-		float & sn, 
-		float & sf,
-		int & length,
 		std::vector<regression_tree> & forest
 		) {
 		
@@ -202,6 +199,8 @@ public:
 		arma::fmat Q(n, q, arma::fill::zeros);
 		arma::fmat y(n, num_points * 2, arma::fill::zeros);
 		
+		float sn = 10.0f, sf = 1.0f;
+		int length = -10;
 		for (int i = 0; i<n; ++i)
 		{
 			for (int j = 0; j < num_points; ++j)
@@ -497,18 +496,29 @@ public:
 	}
 
 	void initialize_feature_extractor(
-		std::vector<arma::fvec> & deltas_
+		std::vector<arma::fvec> & deltas_,
+		std::vector<float> & sigmas_,
+		std::vector<int> & sigma_idx_
 		) {
 		float feature_pattern_scale = 0.4f;
 		float scale = feature_pattern_scale * mean_shape_iod;
 		num_feats = NUM_PATTERNS*num_points;
 		deltas_.resize(NUM_PATTERNS);
+		sigmas_.resize(NUM_SIGMAS);
+		sigma_idx_.resize(NUM_PATTERNS);
 
 		for (int i = 0; i < NUM_PATTERNS; i++)
 		{
 			deltas_[i] = arma::fvec(2, 1);
 			deltas_[i](0, 0) = DELTA_X[i] * scale;
 			deltas_[i](1, 0) = DELTA_Y[i] * scale;
+		}
+		if (enable_smoothing)
+		{
+			for (int i = 0; i < NUM_SIGMAS; i++)
+				sigmas_[i] = SIGMAS[i] * scale;
+			for (int i = 0; i < NUM_PATTERNS; i++)
+				sigma_idx_[i] = SIGMA_IDX[i];
 		}
 	}
 
@@ -549,6 +559,7 @@ public:
 		std::cout << "num points : " << num_points << std::endl;
 		std::cout << "num split tests : " << num_split_tests << std::endl;
 		std::cout << "oversampling ratio : " << oversampling_ratio << std::endl;
+		std::cout << "enable_smoothing : " << enable_smoothing << std::endl;
 		std::cout << "-----------------------------------------" << std::endl;
 	}
 };
