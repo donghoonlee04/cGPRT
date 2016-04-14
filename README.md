@@ -45,8 +45,8 @@ tree_depth 5                        // tree depth
 nu 0.3                              // shrinkage parameter
 oversampling_ratio 20               // training data oversampling ratio
 num_points 68                       // # landmark points
-left_eye_idx ( 36 37 38 39 40 41 )  // left_eye_center = average of left_eye_idx landmarks
-right_eye_idx ( 42 43 44 45 46 47 ) // left_eye_center = average of left_eye_idx landmarks
+left_eye_idx ( 36 37 38 39 40 41 )  // left_eye_center = average of left_eye_idx landmarkst (start from 0)
+right_eye_idx ( 42 43 44 45 46 47 ) // right_eye_center = average of right_eye_idx landmarks (start from 0)
 num_split_tests 200                 // # split tests for each split nodes
 random_seed 1                       // random seed for random number generation
 ```
