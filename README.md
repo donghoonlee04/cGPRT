@@ -12,12 +12,14 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 
 ####Cropped data and pre-learned models
 - [cropped data](http://143.248.157.13:8080/sharing/IRnxfrsb8) - original data can be found in [here](http://ibug.doc.ic.ac.uk/resources/300-W/)
-- [configuration files]()
-- [data list files](http://143.248.157.13:8080/sharing/98yW5PfuO)
-- [predicted landmarks]()
-- [pre-learned models]()
+- [data list files](http://143.248.157.13:8080/sharing/gsCgYWUcq)
+- pre-learned models and performance
 
-
+| Dataset         | Paper (full)  | Paper (fast)  | This (full1)  | This (full2)  | This (fast) |
+| :---            | :---:         | :---:         | :---:         |  :---:        |  :---:      | 
+| LFPW (29 pts)   | 3.51          | N.A.          | | | 3.59 [[down]](http://143.248.157.13:8080/sharing/9OGXZAdvx) |
+| HELEN (194 pts) | 4.63          | N.A.          | | | 4.85 [[down]](http://143.248.157.13:8080/sharing/FQUJxlmDD) |
+| IBUG (68 pts)   | 5.71          | 6.32          | | | 6.32 [[down]](http://143.248.157.13:8080/sharing/mXfem3ria)|
 
 ##Usage
 ####Data format
