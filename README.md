@@ -20,7 +20,8 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 | LFPW (29 pts)   | 3.51          | N.A.          | | | 3.59 [[down]](http://143.248.157.13:8080/sharing/9OGXZAdvx) |
 | HELEN (194 pts) | 4.63          | N.A.          | | | 4.85 [[down]](http://143.248.157.13:8080/sharing/FQUJxlmDD) |
 | IBUG (68 pts)   | 5.71          | 6.32          | | | 6.32** [[down]](http://143.248.157.13:8080/sharing/mXfem3ria)|
-\* Full1 configuration enables Gaussian smoothing while Full2 does not. Current implementation of Gaussian smoothing is quite slow, and performance improvement is not comparatively small. Thus, we recommend disable Gaussian smoothing.
+
+\* Full1 configuration enables Gaussian smoothing while Full2 does not. Current implementation of Gaussian smoothing is quite slow, and performance improvement is not comparatively small. Thus, we recommend disable Gaussian smoothing. <br>
 \** We recommend these models for general purpose.
 
 ##Usage
