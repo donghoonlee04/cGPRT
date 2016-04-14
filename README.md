@@ -10,10 +10,10 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 - [armadillo](http://arma.sourceforge.net/)
 - [LAPACK](http://www.netlib.org/lapack/)
 
-####Cropped data and pre-learned models
+####Cropped data and pre-trained models
 - cropped data [[down]] (http://143.248.157.13:8080/sharing/IRnxfrsb8) - original data can be found in [here](http://ibug.doc.ic.ac.uk/resources/300-W/)
 - data list files [[down]] (http://143.248.157.13:8080/sharing/gsCgYWUcq)
-- pre-learned models and performance
+- pre-trained models and performance
 
 | Dataset         | Paper (full1*)  | Paper (fast)  | This (full1*)  | This (full2*)  | This (fast) |
 | :---            | :---:         | :---:         | :---:         |  :---:        |  :---:      | 
@@ -58,6 +58,10 @@ random_seed 1                       // random seed for random number generation
 ```
 > cGPRT_predict model img_dir data_list result
 ```
+
+####Custom face detector
+Rectangles inputted to the cGPRT should be consistent on training and prediction procedures for initializing facial landmarks. The best way to use a custom face detector is (1) detect faces in cropped images, (2) modify rectangles in data_list file by detected face rectangles, (2) train a model using modified data_list files. If you want to use pre-trained models, the rectangles from the face detector should be re-sized to closed to (x=0, y=0, w=600, h=600) for cropped images.
+
 ##Citation
 Please cite the following [paper](http://slsp.kaist.ac.kr/paperdata/Face_Alignment_Using.pdf) in your publications if it helps your research:
 ```
