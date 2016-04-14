@@ -18,7 +18,7 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 | Dataset         | Paper (full1*)  | Paper (fast)  | This (full1*)  | This (full2*)  | This (fast) |
 | :---            | :---:           | :---:         | :---:         |  :---:        |  :---:      | 
 | LFPW (29 pts)   | 3.51            | N.A.          | on-going | 3.4111 [[down]](http://143.248.157.13:8080/sharing/fFWIHLSHN) | 3.5884 [[down]](http://143.248.157.13:8080/sharing/9OGXZAdvx) |
-| HELEN (194 pts) | 4.63            | N.A.          | on-going | 4.5498 [[down]](http://143.248.157.13:8080/sharing/Te7Lhfb8s) | 4.8518 [[down]](http://143.248.157.13:8080/sharing/FQUJxlmDD) |
+| HELEN (194 pts) | 4.63            | N.A.          | on-going | 4.5498 [[down]](http://143.248.157.13:8080/sharing/Te7Lhfb8s) | 4.8518 [[down]](http://143.248.157.13:8080/sharing/9mUzozIp9) |
 | IBUG (68 pts)   | 5.71            | 6.32          | 5.7173 [[down]](http://143.248.157.13:8080/sharing/HWSlbzpED) | 5.7887** [[down]](http://143.248.157.13:8080/sharing/FEzFBql11) | 6.3181** [[down]](http://143.248.157.13:8080/sharing/mXfem3ria)|
 
 \* The full1 configuration enables Gaussian smoothing while full2 does not. Current implementation of Gaussian smoothing is quite slow, and performance improvement is not comparatively small. Thus, we recommend disable Gaussian smoothing. <br>
