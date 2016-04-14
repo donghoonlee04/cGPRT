@@ -21,7 +21,7 @@ The code is written in c++ using VS2013 and is tests on Windows 8.1 x64 machine.
 | HELEN (194 pts) | 4.63          | N.A.          | on-going | 4.55 [[down]](http://143.248.157.13:8080/sharing/Te7Lhfb8s) | 4.85 [[down]](http://143.248.157.13:8080/sharing/FQUJxlmDD) |
 | IBUG (68 pts)   | 5.71          | 6.32          | on-going | 5.79** [[down]](http://143.248.157.13:8080/sharing/FEzFBql11) | 6.32** [[down]](http://143.248.157.13:8080/sharing/mXfem3ria)|
 
-\* The (full1) configuration enables Gaussian smoothing while (full2) does not. Current implementation of Gaussian smoothing is quite slow, and performance improvement is not comparatively small. Thus, we recommend disable Gaussian smoothing. <br>
+\* The full1 configuration enables Gaussian smoothing while full2 does not. Current implementation of Gaussian smoothing is quite slow, and performance improvement is not comparatively small. Thus, we recommend disable Gaussian smoothing. <br>
 \** We recommend these models for general purpose.
 
 ##Usage
